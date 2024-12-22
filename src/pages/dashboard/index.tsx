@@ -51,6 +51,7 @@ import MiningHistoryModal from "@/app/_components/common/MiningHistoryModal";
 import { XIcon } from "lucide-react";
 import RecentTransfer from "@/app/_components/admin/RecentTransfer";
 import RecentTransferCommon from "@/app/_components/common/RecentTransferCommon";
+import LoadUserName from "@/app/_components/common/LoadUserName";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function TokenChartTooltipContent(props: TooltipProps<any, any>) {
   const { payload, label } = props;
@@ -108,6 +109,7 @@ export default function Dashboard() {
   const [rows, setRows] = useState(3);
   const [redeemModalOpen, setRedeemModalOpen] = useState(false)
   const { data: userDetails } = api.user.getUserDetailsByUserId.useQuery();
+  const [transferOpen, setTransferOpen] = useState(false)
   useEffect(() => {
     if (router.isReady) {
       if (status === "unauthenticated") {
@@ -385,87 +387,34 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4 mb-40  text-white md:flex-row">
           {/* Recent code here */}
           <RecentTransferCommon qrUserId={qrUserId} />
-          {/* <div>
-          <Dialog
-              onOpenChange={(e) => (e === false ? handleSearch("") : null)}
-            >
-              <DialogTrigger asChild>
-                <Button className="bg-[#38F68F] text-black hover:bg-[#38f68fbb]">
-                  Transfer Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="h-[90vh] w-screen border-0 bg-[#262626ED] p-3 py-10 md:p-10 text-white md:w-screen md:max-w-fit ">
-                <DialogHeader>
-                  <DialogTitle className="flex justify-between my-2 text-[30px] text-white md:text-[30px]">
-                    <p className="whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl text-center text-white">
-                      Transfer Tokens
-                    </p>
+          
 
-                    <ScanDialog
-                      setAddNote={setAddNote}
-                      id={qrUserId}
-                      handleSearch={handleSearch}
-                    />
-                  </DialogTitle>
-                  <div className="relative w-full">
-                    <input
-                      type="number"
-                      placeholder="Recent"
-                      onChange={(e) => handleSearch(e.target.value)}
-                      className="w-full my-3 border-b-[1px] border-[#38F68F] bg-[#232323] px-2 sm:px-4 py-1 sm:pr-12 text-white outline-none"
-                    />
-                    <button className="rounded-[0 12px 12px 0] absolute right-0 top-0 h-full px-4 text-black">
-                      <Image
-                        alt=""
-                        height={18}
-                        width={18}
-                        src="/icons/search-icon.svg"
-                      />
-                    </button>
-                  </div>
-                  <DialogDescription className="flex w-full flex-col justify-center px-4 md:w-[100vh] md:flex-row">
-                    <div className="flex w-full flex-col">
-                      <PaginatedUserList
-                        userIds={userIds}
-                        handleSelectUser={handleSelectUser}
-                        selectedUser={selectedUser ?? ""}
-                        amount={amount ?? 0}
-                        handleCoinTransfer={handleCoinTransfer}
-                        getAmountAfterTxnCost={getAmountAfterTxnCost}
-                        setAddNote={setAddNote}
-                        qrUserId={qrUserId}
-                        setAmount={setAmount}
-                        setSelectedUser={setSelectedUser}
-                      />
-                    </div>
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          </div> */}
-
-          <div className="fixed bottom-0 w-full bg-black">
+          <div className="fixed bottom-0 w-full bg-[#0F100F]">
             <div className="flex w-full gap-1 justify-center">
               <Link
                 href="/wheel-spinner"
-                className="bg-gray-800 text-[#2DC574] text-[12px] text-center flex-1 sm:w-[200px] md:w-[250px] lg:w-[300px] m-2 py-5 rounded-xl"
+                className="bg-[#2A2C2A] text-[#2DC574] text-[12px] text-center flex-1 sm:w-[200px] md:w-[250px] lg:w-[300px] m-2 py-5 rounded-xl"
               >
                 Spin The Wheel
               </Link>
 
               <Link
                 href="/scratch-card"
-                className="bg-gray-800 text-[#2DC574] text-[12px] text-center flex-1 sm:w-[200px] md:w-[250px] lg:w-[300px] m-2 py-5 rounded-xl"
+                className="bg-[#2A2C2A] text-[#2DC574] text-[12px] text-center flex-1 sm:w-[200px] md:w-[250px] lg:w-[300px] m-2 py-5 rounded-xl"
               >
                 Scratch the Card
               </Link>
             </div>
 
             <Dialog
-              onOpenChange={(e) => (e === false ? handleSearch("") : null)}
+              open={transferOpen}
+              onOpenChange={(e) => {
+                if(!e) handleSearch("")
+                  setTransferOpen(e)
+              }}
             >
               <DialogTrigger asChild>
-                <Button className="bg-[#38F68F] rounded-full w-14 h-14 min-[500px]:w-16 min-[500px]:h-16  absolute -top-6 min-[500px]:-top-5 left-[50%] translate-x-[-50%]">
+                <Button className="bg-[#38F68F] rounded-full w-14 h-14 min-[500px]:w-16 min-[500px]:h-16  absolute -top-6 min-[500px]:-top-5 left-[50%] translate-x-[-50%]" onClick={() => setTransferOpen(true)}>
                   <Image
                     width={32}
                     height={32}
@@ -474,25 +423,31 @@ export default function Dashboard() {
                   />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="h-[90vh] w-screen border-0 dashboard-card-bg p-3 py-10 md:p-10 text-white md:w-screen md:max-w-fit ">
-                <DialogHeader>
-                  <DialogTitle className="flex justify-between my-2 text-[30px] text-white md:text-[30px]">
-                    <p className="whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl text-center text-white">
-                      Transfer Tokens
-                    </p>
-
-                    <ScanDialog
-                      setAddNote={setAddNote}
-                      id={qrUserId}
-                      handleSearch={handleSearch}
-                    />
-                  </DialogTitle>
+              <DialogContent className="[&>button]:hidden border-0 bg-transparent p-0 text-white md:w-screen md:max-w-fit">
+                <DialogHeader className="h-[90vh] p-3 py-10 text-white md:w-screen md:max-w-fit  rounded-[50px] border border-gray-600 dashboard-card-bg bg-opacity-30 backdrop-blur-lg ">
+                <DialogTitle className="space-y-4">
+                                             <div className='flex justify-end'>
+                                                <XIcon onClick={() => setTransferOpen(false)} />
+                                              </div>
+                                              <div className="flex justify-between my-2 text-[30px] text-white md:text-[30px]">
+                                              <p className="whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl text-center text-white">
+                                                Transfer Tokens
+                                              </p>
+                  
+                                              <ScanDialog
+                                                setAddNote={setAddNote}
+                                                id={qrUserId}
+                                                handleSearch={handleSearch}
+                                              />
+                                              </div>
+                                              
+                                            </DialogTitle>
                   <div className="relative w-full">
                     <input
                       type="number"
                       placeholder="Recent"
                       onChange={(e) => handleSearch(e.target.value)}
-                      className="w-full my-3 border-b-[1px] border-[#38F68F] bg-[#232323] px-2 sm:px-4 py-1 sm:pr-12 text-white outline-none"
+                      className="w-full my-3 border-b-[1px] border-[#38F68F] bg-transparent px-2 sm:px-4 py-3 sm:pr-12 text-white outline-none"
                     />
                     <button className="rounded-[0 12px 12px 0] absolute right-0 top-0 h-full px-4 text-black">
                       <Image
@@ -550,7 +505,7 @@ export default function Dashboard() {
                 className="cursor-pointer transition-transform duration-200 hover:scale-105 md:mr-4"
                 onClick={toggleSidebar}
               />
-              <p className="uppercase">{userName(qrUserId)}</p>
+              <LoadUserName qrUserId={qrUserId} />
               <Image
                 width={16}
                 className="cursor-pointer"
@@ -606,9 +561,9 @@ export default function Dashboard() {
                     />
                   </button>
                 </DialogTrigger>
-                <DialogContent className="[&>button]:hidden h-[70vh] p-0 border-0 bg-transparent text-white md:w-screen md:max-w-fit overflow-hidden">
+                <DialogContent className="[&>button]:hidden md:min-h-[60vh] max-h-[70vh] p-0 border-0 bg-transparent text-white md:w-screen md:max-w-fit overflow-hidden">
                 
-                  <div className="relative w-full h-[70vh] top-0 left-0 rounded-b-[50px] rounded-tr-[50px] dashboard-card-bg bg-opacity-30 backdrop-blur-lg overflow-hidden">
+                  <div className="relative w-full  max-h-[70vh] top-0 left-0 rounded-b-[50px] rounded-tr-[50px] dashboard-card-bg bg-opacity-30 backdrop-blur-lg overflow-hidden">
                     <DialogTitle className="z-50 text-wrap px-9 mt-8 flex w-full items-center justify-center text-center text-[20px] text-white md:mt-28 md:text-[36px]">
                     <div className="absolute top-8 right-10 w-full flex justify-end">
                 <Button variant={"ghost"} className="hover:bg-transparent hover:text-[#fff]" onClick={()=>{setRedeemModalOpen(false)}}><XIcon size={24} /></Button>
@@ -622,7 +577,7 @@ export default function Dashboard() {
                       alt=""
                       className="absolute -z-40 top-0 left-0 cursor-pointer"
                     />
-                    <DialogDescription className=" absolute left-[50%] -translate-x-[50%] mt-8 flex h-full w-full items-start justify-center px-4 md:w-[100vh]">
+                    <DialogDescription className=" absolute left-[50%] -translate-x-[50%] mt-8 flex  w-full items-start justify-center px-4 md:w-[100vh]">
                       <div className="item-center relative flex w-full md:w-3/4 justify-center text-[12px]  md:text-[16px]">
                         <input
                           onChange={(e) => {

@@ -10,17 +10,18 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import ScanDialog from './QrScannerPopup';
 import Image from 'next/image';
 import PaginatedUserList from './PagedUserList';
-import { XIcon } from 'lucide-react';
-
+import { Loader2, XIcon } from 'lucide-react';
+import "../../../styles/scroll.css"
 
 const RecentTransferCommon = ({qrUserId}:{
   qrUserId:string
 }) => {
     const [currentPage, setCurrentPage] = useState(1)
-    const [rows, setRows] = useState(5)
+    const [rows, setRows] = useState(3)
     const [dateFilter, setDateFilter] = useState<Date[] | null>(null)
     const [timeFilter, setTimeFilter] = useState<number[]>([0,0])
     const [transfers, setTransfers] = useState<"global" | "user" | "burnt">("global")
+    const [loading, setLoading] = useState(true)
     const [txns, setTxns] = useState<{
         firestoreId: string;
         amount: number;
@@ -30,7 +31,7 @@ const RecentTransferCommon = ({qrUserId}:{
         to: string;
     }[]>([])
 
-
+        const [open, setOpen] = useState(false)
         const [addNote, setAddNote] = useState("");
         const [qrId, setQrId] = useState("")
         const [userIds, setUserIds] = useState<string[]>([]);
@@ -62,6 +63,7 @@ const RecentTransferCommon = ({qrUserId}:{
         fetchNextPage,
         hasNextPage,
         hasPreviousPage,
+        isPending:burntIsPending
       } = api.txn.getLatestTxnBurntInf.useInfiniteQuery(
         {
           limit: rows,
@@ -74,7 +76,8 @@ const RecentTransferCommon = ({qrUserId}:{
 
       const {
         data: txnsGlobal,
-        fetchNextPage:fetchNextAllUsers
+        fetchNextPage:fetchNextAllUsers,
+        isPending:globalIsPending
       } = api.txn.getLatestTxnInf.useInfiniteQuery(
         {
           limit: rows,
@@ -87,7 +90,8 @@ const RecentTransferCommon = ({qrUserId}:{
 
       const {
         data: txnsUser,
-        fetchNextPage:fetchNextAllTrans
+        fetchNextPage:fetchNextAllTrans,
+        isPending:userIsPending
       } = api.txn.getLatestTxnByUserIdInf.useInfiniteQuery(
         {
           limit: rows,
@@ -101,10 +105,11 @@ const RecentTransferCommon = ({qrUserId}:{
 
       useEffect(()=>{
         setTxns([])
+        setLoading(true)
         if(transfers == 'global'){
             setTxns(txnsGlobal?.pages[currentPage-1]?.transactions ?? [])
             if(dateFilter){
-              let newTxns = txnsGlobal?.pages[currentPage-1]?.transactions.filter(txn => {
+              const newTxns = txnsGlobal?.pages[currentPage-1]?.transactions.filter(txn => {
                   const formatedDate = formatFirestoreTimestamp(txn.timestamp)?.date
                   if(!formatedDate) return false
                   const dateFilterArray = dateFilter.map(date => {
@@ -121,7 +126,7 @@ const RecentTransferCommon = ({qrUserId}:{
         if(transfers == 'burnt'){
             setTxns(txn?.pages[currentPage-1]?.transactions.filter(txn => txn.to.toLowerCase() == '00000000' ) ?? [])
             if(dateFilter){
-              let newTxns = txn?.pages[currentPage-1]?.transactions.filter(txn => {
+              const newTxns = txn?.pages[currentPage-1]?.transactions.filter(txn => {
                   const formatedDate = formatFirestoreTimestamp(txn.timestamp)?.date
                   if(!formatedDate) return false
                   const dateFilterArray = dateFilter.map(date => {
@@ -138,7 +143,7 @@ const RecentTransferCommon = ({qrUserId}:{
           if(transfers == 'user'){
             setTxns(txnsUser?.pages[currentPage-1]?.transactions ?? [])
             if(dateFilter){
-              let newTxns = txnsUser?.pages[currentPage-1]?.transactions.filter(txn => {
+              const newTxns = txnsUser?.pages[currentPage-1]?.transactions.filter(txn => {
                   const formatedDate = formatFirestoreTimestamp(txn.timestamp)?.date
                   if(!formatedDate) return false
                   const dateFilterArray = dateFilter.map(date => {
@@ -152,6 +157,7 @@ const RecentTransferCommon = ({qrUserId}:{
           }
             console.log(txn?.pages[currentPage-1]?.transactions ?? []);
           }
+          setLoading(false)
       }, [txn, transfers, currentPage,rows, dateFilter])
 
 
@@ -170,7 +176,7 @@ const RecentTransferCommon = ({qrUserId}:{
         to: string;
     }[] | undefined) => {
         if(timeFilter.filter(time => time != 0).length > 1 && txns){
-          let newTxns = txns.filter((txn) => {
+          const newTxns = txns.filter((txn) => {
             const time = formatFirestoreTimestamp(txn.timestamp)?.time.split(":") ?? []
             if(time && time.length > 1){
               const min = parseInt(time[1] ?? "2")
@@ -204,7 +210,7 @@ const RecentTransferCommon = ({qrUserId}:{
       };
   return (
     <div className='px-5 pb-5 pt-0 mb-3'>
-        <div className="flex flex-col gap-4 text-white md:flex-row mt-0">
+        <div className={`flex flex-col gap-4 text-white md:flex-row ${rows == 9 ? "mt-8":"mt-0"}`}>
           <div className="flex max-h-[500px] mt-10 w-full flex-col items-center justify-center md:w-full">
             <div className="flex w-full  flex-row justify-between gap-12 pb-6">
               <p className='text-xl'>Recent Transfers</p>
@@ -216,18 +222,18 @@ const RecentTransferCommon = ({qrUserId}:{
               </div>
             </div>
             <div className='flex  justify-start max-w-[90vw] w-full gap-2 flex-wrap'>
-                <Button className={`text-[10px] md:text-[18px] rounded-none ${transfers == 'global' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white" }`} onClick={()=>{
+                <Button className={`text-[10px] md:text-[18px] rounded-none ${transfers == 'global' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white hover:bg-transparent" }`} onClick={()=>{
                     setTransfers('global')
                     setCurrentPage(1)
                 }}>Global Transfers</Button>
-                <Button className={` text-[10px] md:text-[18px] rounded-none ${transfers == 'user' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white" }`} onClick={()=>{
+                <Button className={` text-[10px] md:text-[18px] rounded-none ${transfers == 'user' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white hover:bg-transparent" }`} onClick={()=>{
                 setCurrentPage(1)
                 setTransfers('user')
             }}>
               <p className='max-sm:hidden'>User Transfers</p>
               <p className='sm:hidden'>User</p>
             </Button>
-                <Button className={`text-[10px] md:text-[18px] rounded-none ${transfers == 'burnt' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white" }`} onClick={()=>{
+                <Button className={`text-[10px] md:text-[18px] rounded-none ${transfers == 'burnt' ? "bg-[#38f28f] text-black hover:bg-[#38f68faa]":"bg-transparent text-white hover:bg-transparent" }`} onClick={()=>{
                     setTransfers('burnt')
                     setCurrentPage(1)
                 }}>Burnt</Button>
@@ -235,8 +241,11 @@ const RecentTransferCommon = ({qrUserId}:{
             <div className="-m-1.5 w-full">
               <div className="inline-block min-w-full p-1.5 align-middle">
                 <div className="overflow-hidden">
-                  <div className="max-w-[90vw] overflow-x-auto md:max-w-full max-h-[500px] overflow-y-auto">
-                    <table className="min-w-full divide-y divide-[#38F68F] text-[#A7B0AF]">
+                  <div className="max-w-[90vw] overflow-x-auto  md:max-w-full max-h-[500px] overflow-y-auto scroll-bar-custom">
+                    {
+                      globalIsPending || userIsPending || burntIsPending ? <div className='w-full h-full grid place-items-center p-3'>
+                          <Loader2 className='animate-spin w-5 h-5 text-[#38f68f]'  />
+                      </div>:<table className="min-w-full divide-y divide-[#38F68F] text-[#A7B0AF]">
                       <thead className="text-[10px] sm:text-[16px]">
                         <tr>
                           <th
@@ -271,7 +280,9 @@ const RecentTransferCommon = ({qrUserId}:{
                           </th>
                         </tr>
                       </thead>
-                      <tbody className='text-[12px] sm:text-[16px] '>
+                      
+                        
+                        <tbody className='text-[12px] sm:text-[16px] '>
                         {txns?.map(
                           (transaction, index) => (
                             <tr key={index} >
@@ -302,7 +313,9 @@ const RecentTransferCommon = ({qrUserId}:{
                           ),
                         )}
                       </tbody>
+                      
                     </table>
+                    }
                   </div>
                   
                   <div className="flex w-full items-center md:flex-row md:justify-between mb-18">
@@ -355,16 +368,25 @@ const RecentTransferCommon = ({qrUserId}:{
                   {/* transfefr now */}
                   <div className="flex justify-end  mt-4">
                                     <Dialog
-                                        onOpenChange={(e) => (e === false ? handleSearch("") : null)}
+                                        open={open}
+                                        onOpenChange={(e) =>{
+                                          if(!e){
+                                            handleSearch("")
+                                          }
+                                          setOpen(e)
+                                        }}
                                       >
                                         <DialogTrigger asChild>
                                           <Button className="bg-[#38F68F] text-black hover:bg-[#38f68fbb]">
                                             Transfer Now
                                           </Button>
                                         </DialogTrigger>
-                                        <DialogContent className=" border-0 bg-transparent  text-white md:w-screen md:max-w-fit ">
-                                          <DialogHeader className='h-[90vh] w-screen p-3 py-10 md:p-10 text-white md:w-screen md:max-w-fit  rounded-[50px] border border-gray-600 dashboard-card-bg bg-opacity-30 backdrop-blur-lg '>
-                                            <DialogTitle className="flex justify-between my-2 text-[30px] text-white md:text-[30px]">
+                                        <DialogContent className="[&>button]:hidden border-0 bg-transparent p-0 text-white md:w-screen md:max-w-fit ">
+                                          <DialogHeader className='h-[90vh] p-3 py-10 lg:p-10 text-white md:w-screen md:max-w-fit  rounded-[50px] border border-gray-600 dashboard-card-bg bg-opacity-30 backdrop-blur-lg '>
+                                            <DialogTitle className="space-y-4">
+                                             <div className='flex justify-end'>
+                                                <XIcon onClick={() => setOpen(false)} />
+                                              </div>
                                               <div className="flex justify-between my-2 text-[30px] text-white md:text-[30px]">
                                               <p className="whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl text-center text-white">
                                                 Transfer Tokens
@@ -376,9 +398,7 @@ const RecentTransferCommon = ({qrUserId}:{
                                                 handleSearch={handleSearch}
                                               />
                                               </div>
-                                              <div>
-                                                <XIcon />
-                                              </div>
+                                              
                                             </DialogTitle>
                                             <div className="relative w-full">
                                               <input

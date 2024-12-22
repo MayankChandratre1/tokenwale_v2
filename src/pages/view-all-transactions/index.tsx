@@ -4,6 +4,7 @@ import { Navbar } from "../../app/_components/common/Navbar";
 import React, { useState } from "react";
 import { api } from "@/trpc/react";
 import { formatFirestoreTimestamp, userName } from "@/utils/random";
+import RecentTransferCommon from "@/app/_components/common/RecentTransferCommon";
 
 const Spinner = () => (
   <div className="flex h-full items-center justify-center">
@@ -52,12 +53,10 @@ const Viewall = () => {
   return (
     <section className="w-full">
       <Navbar />
-      <div className="flex flex-col gap-8 px-4 py-4 pt-10 text-white md:flex-row md:px-8 lg:px-12 xl:px-20">
-        <div className="dashboard-card-bg mt-12 flex h-[210px] w-full items-center justify-center rounded-xl border-[1px] border-[#2D2D2D] text-[50px] md:w-full">
-          ADS
-        </div>
+      <div className="pt-44 min-h-screen">
+        <RecentTransferCommon qrUserId="" />
       </div>
-      <section className="w-full px-4 py-4 md:px-8 lg:px-12 xl:px-20">
+      {/* <section className="w-full px-4 py-4 pt-24 md:px-8 lg:px-12 xl:px-20">
         <div className="mb-6 flex flex-col items-center justify-start gap-4 px-4 md:flex-row md:gap-12">
           <div className="flex items-center bg-[#38F68F] px-4 py-2">
             <p className="text-[14px] font-semibold tracking-[0.2em] text-black md:text-[16px]">
@@ -164,8 +163,7 @@ const Viewall = () => {
             </>
           )}
         </div>
-      </section>
-      <LandingPageFooter />
+      </section> */}
     </section>
   );
 };

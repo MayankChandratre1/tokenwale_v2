@@ -7,7 +7,6 @@ import {
 import { userName } from "@/utils/random";
 import { useState } from "react";
 import Transfer from "./Transfer";
-import { api } from "@/trpc/react";
 
 const PaginatedUserList = ({
   userIds,
@@ -78,7 +77,7 @@ const PaginatedUserList = ({
                 Transfer now
               </button>
             </DialogTrigger>
-            <DialogContent className="h-[90vh] overflow-y-auto w-full border-0 bg-transparent dashboard-card-bg backdrop-blur-md text-white md:w-screen md:max-w-fit">
+            <DialogContent className="h-fit max-h-[90vh]  overflow-y-auto w-full border-0 bg-transparent dashboard-card-bg backdrop-blur-md text-white  pb-24 md:max-w-fit ">
               <DialogHeader className="">
                 <Transfer getAmountAfterTxnCost={getAmountAfterTxnCost}  amount={amount} setAddNote={setAddNote} setAmount={setAmount}  qrUserId={qrUserId} selectedUser={selectedUser} />
               </DialogHeader>

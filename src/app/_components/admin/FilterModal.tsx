@@ -99,7 +99,7 @@ const FilterModal = ({setDateFilter, setTime}:{
       </DialogTrigger>
       <DialogContent
         showOverlay={false}
-        className="dashboard-card-bg max-h-[90vh] max-sm:w-[100vw] max-sm:px-3 overflow-y-auto border border-[#38f68f99] backdrop-blur-lg backdrop:opacity-100 border-none text-white p-8"
+        className="dashboard-card-bg bg-transparent dashboard-card-bg max-h-[90vh] max-sm:w-[100vw] max-sm:px-3 overflow-y-auto border border-[#38f68f99] backdrop-blur-lg backdrop:opacity-100 border-none text-white p-8"
       >
         <div className="space-y-4 ">
           <h2 className="text-xl font-bold">Filters</h2>

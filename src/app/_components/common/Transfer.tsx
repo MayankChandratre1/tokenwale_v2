@@ -58,8 +58,8 @@ const Transfer = ({
 
   return (
     <div>
-      <div className="flex max-h-[80vh]  w-full flex-col justify-center overflow-y-auto px-4 py-0 md:max-h-full md:w-[100vh] md:py-0">
-        <div className=" mt-32 min-[400px]:mt-28 flex flex-row items-center justify-center gap-4 md:mt-20">
+      <div className="flex max-h-[80vh] w-full flex-col justify-center overflow-y-auto px-4 py-0 md:max-h-full md:w-[100vh] md:py-0">
+        <div className="mt-32 lg:mt-5 min-[400px]:mt-28 flex flex-row items-center justify-center gap-4 md:mt-20">
           <p className="text-[12px] uppercase text-white md:text-[20px]">
             Enter Amount :
           </p>
@@ -119,14 +119,14 @@ const Transfer = ({
         <div className="flex flex-col items-center justify-center">
           <input
             placeholder="Add Note"
-            className="rounded-[10px] mt-3 border-none bg-[#38F68F] bg-opacity-25 px-4 py-1 text-center text-[15px] text-white outline-none md:text-[24px]"
+            className="rounded-[10px] w-fit mt-3 border-none bg-[#38F68F] bg-opacity-25 px-4 py-1 text-center text-[15px] text-white outline-none md:text-[24px]"
             type="text"
             onChange={(e) => {
               setAddNote(e.target.value);
             }}
           />
           <button
-            className="mt-4 w-full max-w-[300px] rounded-[10px] bg-[#38F68F] py-3 text-center text-[16px] sm:text-[24px] font-[600] text-black md:text-[26px]"
+            className="mt-4 w-fit px-3 max-w-[300px] rounded-[10px] bg-[#38F68F] py-3 text-center text-[16px] sm:text-[16px] font-[600] text-black md:text-[20px]"
             onClick={() =>
               handleCoinTransfer(
                 amount ?? 0,
@@ -140,24 +140,24 @@ const Transfer = ({
         </div>
       </div>
       <Dialog open={wonDialogOpen} onOpenChange={setWonDialogOpen}>
-        <DialogContent className="h-[90vh] w-screen border-0 bg-[#262626ED] text-white md:w-screen md:max-w-fit">
-          <DialogHeader>
-            <DialogDescription className="flex h-full w-full flex-col items-center justify-center px-4 md:w-[100vh]">
+        <DialogContent className="h-[90vh] w-screen border-0 bg-transparent text-white md:w-screen md:max-w-fit">
+          <DialogHeader className="dashboard-card-bg backdrop-blur-lg">
+            <DialogDescription className="flex h-full w-full flex-col items-center justify-center px-4 md:w-[100vh] ">
               <div className="flex w-full items-center justify-center text-[40px] font-semibold text-white">
                 <Image
                   width={120}
                   height={120}
                   src="/icons/correct-icon.png"
-                  className=""
+                  className="sm:w-[200px] aspect-square"
                   alt="img"
                 />
               </div>
-              <div className="mt-12 flex flex-col gap-2 w-full items-center justify-center text-[20px] lg:text-[40px] font-bold text-[#38F68F] md:mt-20">
+              <div className="mt-12 flex flex-col gap-2 w-full items-center justify-center text-[20px] lg:text-[40px] font-bold text-[#38F68F] md:mt-12">
                 <p>{amount ?? 0} Tokens!</p>
-                <p className="text-sm lg:text-2xl mt-2">
+                <p className="text-sm lg:text-2xl mt-2 md:mt-12 font-normal text-white">
                   Transfered to {userName(selectedUser ?? "")} successfully.
                 </p>
-                <p className="text-[16px]">{new Date().toLocaleString()}</p>
+                <p className="text-[16px] text-white">{new Date().toLocaleString()}</p>
               </div>
             </DialogDescription>
           </DialogHeader>
