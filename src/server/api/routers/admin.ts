@@ -42,5 +42,77 @@ export const adminRouter = createTRPCRouter({
         }catch(e){
             return {error:e, all: [], lastVisible:""}
         }
+    }),
+
+  banUserById: protectedProcedure
+    .input(z.object({
+      userId:z.string()
+    }))
+    .mutation(async ({ctx, input}) => {
+        const {userId} = input
+        const user = await ctx.db.collection('users').where('userId','==',userId).get()
+        
+        try{
+            const userRef =  user.docs[0]?.ref
+            if(!userRef){
+              throw Error('No User Selected')
+            }
+            await userRef.update({
+              banned:true
+            })
+            await ctx.db.collection('banned').add({
+              userId: user.docs[0]?.data().userId,
+              email: user.docs[0]?.data().email,
+              phone: user.docs[0]?.data().phone,
+            })
+            
+            return {error: false}
+        }catch(e){
+            return {error:e, all: [], lastVisible:""}
+        }
+    }),
+  disBanUserById: protectedProcedure
+    .input(z.object({
+      userId:z.string()
+    }))
+    .mutation(async ({ctx, input}) => {
+        const {userId} = input
+        const user = await ctx.db.collection('users').where('userId','==',userId).get()
+        const bannedDoc = await ctx.db.collection('banned').where('userId','==',userId).get()
+        try{
+            const userRef =  user.docs[0]?.ref
+            if(!userRef){
+              throw Error('No User Selected')
+            }
+            await userRef.update({
+              banned:false
+            })
+            await bannedDoc.docs[0]?.ref.delete()
+            return {error: false}
+        }catch(e){
+            return {error:e, all: [], lastVisible:""}
+        }
+    }),
+  deactivateUserById: protectedProcedure
+    .input(z.object({
+      userId:z.string()
+    }))
+    .mutation(async ({ctx, input}) => {
+        const {userId} = input
+        const user = await ctx.db.collection('users').where('userId','==',userId).get()
+        
+        try{
+            const userRef =  user.docs[0]?.ref
+            if(!userRef){
+              throw Error('No User Selected')
+            }
+            await ctx.db.collection('deactivated').add({
+              ...user.docs[0]?.data()
+            })
+            await userRef.delete()
+            return {error: false}
+        }catch(e){
+            return {error:e, all: [], lastVisible:""}
+        }
     })
 });

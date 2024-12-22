@@ -111,7 +111,7 @@ export const userRouter = createTRPCRouter({
       ...doc.data(),
     }));
 
-    const { userId, balance, name, phone, email, address, gender } =
+    const { userId, balance, name, phone, email, address, gender, banned } =
       users[0] as unknown as {
         userId: string;
         balance: number;
@@ -120,8 +120,9 @@ export const userRouter = createTRPCRouter({
         email: string;
         address: string;
         gender: "M" | "F" | "O";
+        banned?:boolean
       };
-    return { userId, balance, name, phone, email, address, gender };
+    return { userId, balance, name, phone, email, address, gender, banned };
   }),
   findUserByUserId: protectedProcedure
     .input(

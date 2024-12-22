@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const UserTokenSettings = () => {
-  const [userIds, setUserIds] = useState<string[]>(["35049053","76396130"]);
+  const [userIds, setUserIds] = useState<string[]>(["35049053","76396130","16226215"]);
   const { mutate, isPending } = api.user.findUserByUserId.useMutation({
     onSuccess: (data) => {
       setUserIds(data.map((e) => e));
@@ -29,12 +29,12 @@ const UserTokenSettings = () => {
       <div className="pt-20">
         <h2 className="text-4xl text-white px-4 py-2">User Settings</h2>
         <div>
-          <div className="relative w-full">
+          <div className="relative px-3 w-full">
             <input
               type="number"
               placeholder="Recent"
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full my-3 border-b-[1px] border-[#38F68F] bg-[#232323] px-2 sm:px-4 py-1 sm:pr-12 text-white outline-none"
+              className="w-full my-3 border-b-[1px] border-[#38F68F] bg-transparent px-4 sm:px-4 py-4 sm:pr-12 text-white outline-none"
             />
             <button className="rounded-[0 12px 12px 0] absolute right-0 top-0 h-full px-4 text-black">
               <Image

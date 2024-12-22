@@ -1,9 +1,7 @@
-import BarChartMain from "@/app/_components/admin/BarChartMain";
 import BarChartUser from "@/app/_components/admin/BarChartUser";
 import BarChartUserMine from "@/app/_components/admin/BarChartUserMine";
 import FilterModal from "@/app/_components/admin/FilterModal";
 import MiningHistoryModalUser from "@/app/_components/admin/MiningHistoryModalUser";
-import MiningHistoryModal from "@/app/_components/common/MiningHistoryModal";
 import { Navbar } from "@/app/_components/common/Navbar";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
@@ -11,14 +9,36 @@ import { Download, InfoIcon, Loader2, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import "../../../../styles/scroll.css"
+import { useRouter } from "next/router";
 
 const UserTokenSettingsByIdPage = () => {
   const params = useParams<{ id: string }>();
   const [user, setUser] = useState<any>(null);
   const [isMiningHistory, setIsMiningHistory] = useState(false)
+  const [isBanned, setIsBanned] = useState(false)
+  const router = useRouter()
 
   const {data:userData} = api.user.getUserDetailsForUserId.useQuery({
     id: params?.id ?? "76396130"
+  })
+
+  const {mutate: banUser} = api.admin.banUserById.useMutation({
+    onSuccess:(data)=>{
+      setIsBanned(true) 
+    }
+  })
+
+  const {mutate: deactivateUser} = api.admin.deactivateUserById.useMutation({
+    onSuccess:(data)=>{
+      router.push("/admin-dashboard")
+    }
+  })
+
+  const {mutate: disbanUser} = api.admin.disBanUserById.useMutation({
+    onSuccess:(data)=>{
+      setIsBanned(false)
+    }
   })
 
   const toggle = (set:React.Dispatch<React.SetStateAction<boolean>> ) => {
@@ -29,8 +49,10 @@ const UserTokenSettingsByIdPage = () => {
     console.log(params?.id);
 
     if(userData){
+      setIsBanned(!!userData.banned)
       setUser(userData)
     }
+
     // setUser({
     //   address: "jhsj",
     //   balance: 192,
@@ -55,7 +77,7 @@ const UserTokenSettingsByIdPage = () => {
     <div className="text-white min-h-screen dashboard-card-bg">
       <Navbar />
       <div className="pt-20 min-h-screen h-screen  px-4 pb-4">
-        <div className="h-full overflow-y-auto rounded-md p-4 px-6 bg-[#38f68f] bg-opacity-10 backdrop-blur-sm">
+        <div className="h-full scroll-bar-custom overflow-y-auto rounded-md p-4 px-6 bg-[#38f68f] bg-opacity-10 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl">USER DETAILS</h2>
             <Link href={"/admin-dashboard/usertokensettings"}>
@@ -116,7 +138,11 @@ const UserTokenSettingsByIdPage = () => {
             </div>
 
             <div className="w-full flex justify-end py-3">
-              <Button variant={"destructive"} className="text-sm">
+              <Button onClick={()=>{
+                deactivateUser({
+                  userId: params.id
+                })
+              }} variant={"destructive"} className="text-sm">
                 Deactivate Account
               </Button>
             </div>
@@ -126,7 +152,17 @@ const UserTokenSettingsByIdPage = () => {
                 By Clicking on Ban Account, you restrict the user from creating
                 a new account from the same credentials
               </p>
-              <Button variant={"destructive"}>Ban Account</Button>
+              {
+                isBanned ? <Button className="bg-[#38f68f] hover:bg-[#38f68fdd]" onClick={()=>{
+                  disbanUser({
+                    userId: params.id
+                  })
+                }}>Disban Account</Button>:<Button variant={"destructive"} onClick={()=>{
+                  banUser({
+                    userId: params.id
+                  })
+                }}>Ban Account</Button>
+              }
             </div>
           </div>
         </div>

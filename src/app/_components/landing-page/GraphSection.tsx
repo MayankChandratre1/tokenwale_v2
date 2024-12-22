@@ -87,15 +87,15 @@ export const GraphSection = () => {
   return (
     <div className='h-full pb-12 w-full flex flex-col justify-center items-center gap-12 px-8'>
       <div className='flex flex-col md:flex-row gap-12 justify-center items-center'>
-        <div className='relative w-full md:w-[30%] flex justify-center'>
-          <Image src="/backgrounds/hero-green-card.png" width={1000} height={1000} className='w-full h-full object-cover' alt="card" />
-          <div className='absolute inset-0 flex justify-center items-center flex-col px-8'>
-            <h1 className=' text-[1rem] sm:text-2xl lg:text-4xl font-bold text-[#38F68F]'>PLAY TO EARN INCENTIVE PROGRAM</h1>
+        <div className='relative w-full md:w-[80%] lg:w-[30%] flex justify-center'>
+          <Image src="/backgrounds/hero-green-card.png" width={1000} height={1000} className='h-[90%] lg:w-full lg:h-full object-cover' alt="card" />
+          <div className='absolute inset-0 flex justify-center items-center flex-col px-3 lg:px-8'>
+            <h1 className=' text-[1rem] sm:text-xl lg:text-4xl font-bold text-[#38F68F]'>PLAY TO EARN INCENTIVE PROGRAM</h1>
             <p className='text-[0.7rem] min-[350px]:text-[0.9rem] sm:text-[16px] mt-4 sm:mt-12 text-[#A7B0AF]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque culpa hic labore obcaecati.</p>
           </div>
         </div>
         <div className='w-full md:w-auto'>
-          <Image src="/backgrounds/coin-drop.png" width={1000} height={1000} alt="card" className='w-full h-auto md:w-auto md:h-full' />
+          <Image src="/backgrounds/coin-drop.png" width={1000} height={1000} alt="card" className='w-full h-auto md:w-full lg:h-full' />
         </div>
       </div>
       <div className='flex flex-col w-3/4 md:flex-row gap-12 justify-center items-center'>
