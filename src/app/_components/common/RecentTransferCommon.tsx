@@ -312,6 +312,25 @@ const RecentTransferCommon = ({qrUserId}:{
                             </tr>
                           ),
                         )}
+                        {txns.length == 0 && (
+                          <tr>
+                            <td className=' py-4 text-gray-500 italic text-center'>
+                              No Transactions on this page
+                            </td>
+                            <td className=' py-4 text-gray-500 italic text-center'>
+                              N/A
+                            </td>
+                            <td className=' py-4 text-gray-500 italic text-center'>
+                              N/A
+                            </td>
+                            <td className=' py-4 text-gray-500 italic text-center'>
+                              N/A
+                            </td>
+                            <td className=' py-4 text-gray-500 italic text-center'>
+                              N/A
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                       
                     </table>

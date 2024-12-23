@@ -5,9 +5,11 @@ import { BadgePercent, Ban, CreditCard, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import RecentTransfer from '@/app/_components/admin/RecentTransfer'
 import BarChartMain from '@/app/_components/admin/BarChartMain'
+import AdminNav from '@/app/_components/admin/AdminNav'
 import { Button } from '@/components/ui/button'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import RecentTransferCommon from '@/app/_components/common/RecentTransferCommon'
 const quickLinks = [
     {
         name: "Generate & Send",
@@ -51,7 +53,7 @@ const AdminDashboard = () => {
       };
   return (
     <div className='bg-gradient-to-br from-[#38f68e67] via-[] to-[#2d2d2d]'>
-         <Navbar setAddNote={(text)=>console.log(text)
+         <AdminNav setAddNote={(text)=>console.log(text)
          } toggleSidebar={()=>{
             console.log("Print");
             

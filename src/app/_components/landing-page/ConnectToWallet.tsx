@@ -1,4 +1,5 @@
 "use client";
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -6,16 +7,18 @@ import React from 'react';
 export const ConnectToWallet = () => {
   const router = useRouter();
   return (
-    <section className='w-full md:h-[70vh] h-[50vh] flex flex-col items-center overflow-hidden'>
+    <section className='w-full relative md:h-[70vh] h-[50vh] flex flex-col items-center '>
       <Image
-        className='absolute left-0  -mt-12 min-[450px]:-mt-32  sm:-mt-16  md:-mt-20 w-1/4 lg:w-[16%]'
+        className={cn('absolute left-0 -top-16 w-[22%] lg:w-[16%]')}
         src="/backgrounds/connect-coin-1.png"
         width={1000}
         height={1000}
         alt="Connect Coin 1"
       />
       <div className='md:h-[476px] h-[276px] bg-[#38F68F] w-full flex justify-center items-center flex-col'>
-        <p className='uppercase text-[24px] lg:text-[64px] w-11/12 min-[600px]:w-1/2 md:w-2/3 text-center font-[700] text-[#19231E]'>
+        <p className='uppercase z-96 text-[24px] lg:text-[64px] w-11/12 min-[600px]:w-1/2 md:w-2/3 text-center font-[700] text-[#19231E]' style={{
+          zIndex:999
+        }}>
           Want to play and earn without any cash?
         </p>
         <button

@@ -6,6 +6,9 @@ import { CalendarIcon, ClockIcon, Filter } from "lucide-react"; // Icon library
 import "@/styles/filter.css";
 import { TimePicker } from "./TimePicker";
 
+import "../../../styles/scroll.css"
+import { cn } from "@/lib/utils";
+
 const FilterModal = ({setDateFilter, setTime}:{
   setDateFilter?:React.Dispatch<React.SetStateAction<Date[] | null>>,
   setTime?:React.Dispatch<React.SetStateAction<number[]>>
@@ -99,20 +102,20 @@ const FilterModal = ({setDateFilter, setTime}:{
       </DialogTrigger>
       <DialogContent
         showOverlay={false}
-        className="dashboard-card-bg bg-transparent dashboard-card-bg max-h-[90vh] max-sm:w-[100vw] max-sm:px-3 overflow-y-auto border border-[#38f68f99] backdrop-blur-lg backdrop:opacity-100 border-none text-white p-8"
+        className="scroll-bar-custom dashboard-card-bg bg-transparent dashboard-card-bg max-h-[90vh] max-sm:w-[100vw] max-sm:px-3 overflow-y-auto border border-[#38f68f99] backdrop-blur-lg backdrop:opacity-100 border-none text-white p-8"
       >
         <div className="space-y-4 ">
           <h2 className="text-xl font-bold">Filters</h2>
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-2">
-              <div className="bg-[#38f68f] flex justify-between w-[90%] my-2 px-3 py-1 rounded-md items-center">
-                <div className="text-xs flex gap-2 text-black  flex-1">
+              <div className="bg-[#38f68f] flex justify-between md:w-[90%] my-2 px-2 md:px-3 py-1 rounded-md items-center">
+                <div className="text-[0.7rem] flex gap-2 text-black  flex-1">
                   <p>{startDate ? formatDate(startDate) : "YYYY_MM_DD"}</p>
                   <p>to</p>
                   <p>{endDate ? formatDate(endDate) : "YYYY_MM_DD"}</p>
                 </div>
                 <div>
-                  <CalendarIcon color="black" size={18} />
+                  <CalendarIcon className={cn(`max-sm:hidden`)} color="black" size={18} />
                 </div>
               </div>
               <Calendar
@@ -123,12 +126,12 @@ const FilterModal = ({setDateFilter, setTime}:{
                 }}
                 onDayClick={(date: Date) => handleDateClick(date)}
                 mode="multiple"
-                className=""
+                className="overflow-x-auto overflow-y-hidden scroll-bar-custom"
                 classNames={{
                   day_today: `border-[#38f68f]`, // Add a border to today's date
                   day_selected: `bg-[#38f68f] rounded-none hover:bg-[#38f68fdd] text-black `, // Highlight the selected day
-                  root: `bg-black text-white shadow-lg px-5 rounded-xl h-[300px] max-sm:text-[5px] `,
-                  day: `w-full h-full  rounded-md`,
+                  root: `bg-black text-white shadow-lg md:px-5 rounded-xl h-[300px] max-sm:text-[5px] `,
+                  day: `md:w-full md:h-full rounded-md max-md:text-[0.6rem] `,
                 }}
               />
             </div>

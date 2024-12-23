@@ -30,7 +30,7 @@ export function TimePicker({setHours, setMinutes, time}:{
   }
 
   return (
-    <div className="flex items-center justify-center space-x-4 p-2 bg-black rounded-lg shadow-md text-white">
+    <div className="flex items-center justify-center md:space-x-4 p-2 bg-black rounded-lg shadow-md text-white">
       <TimeColumn
         values={renderTimeValues(time.hours, 24)}
         onIncrement={incrementHours}

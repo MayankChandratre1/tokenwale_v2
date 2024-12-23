@@ -11,6 +11,8 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import "../../../../styles/scroll.css"
 import { useRouter } from "next/router";
+import AdminNav from "@/app/_components/admin/AdminNav";
+import DeleteModal from "@/app/_components/admin/DeleteModal";
 
 const UserTokenSettingsByIdPage = () => {
   const params = useParams<{ id: string }>();
@@ -73,9 +75,16 @@ const UserTokenSettingsByIdPage = () => {
     );
   }
 
+  const handleDelete = () => {
+    deactivateUser({
+      userId: params.id
+    })
+    router.push("/admin-dashboard/usertokensettings")
+  }
+
   return (
-    <div className="text-white min-h-screen dashboard-card-bg">
-      <Navbar />
+    <div className="text-white min-h-screen bg-black">
+      <AdminNav />
       <div className="pt-20 min-h-screen h-screen  px-4 pb-4">
         <div className="h-full scroll-bar-custom overflow-y-auto rounded-md p-4 px-6 bg-[#38f68f] bg-opacity-10 backdrop-blur-sm">
           <div className="flex items-center justify-between">
@@ -91,21 +100,21 @@ const UserTokenSettingsByIdPage = () => {
 
           <div>
             <div className="px-4 mt-3 grid grid-cols-3 uppercase gap-8 text-md py-2">
-              <p className="flex-1 text-center p-2 bg-[#121212aa] rounded-md">
+              <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
                 {user.name ? user.name.split(" ")[0]: "N/A"}
               </p>
-              <p className="flex-1 text-center p-2 bg-[#121212aa] rounded-md">
+              <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
                 {user.name ? user.name.split(" ")[user.name.split(" ").length - 1]:"N/A"}
               </p>
-              <p className="flex-1 text-center p-2 bg-[#121212aa] rounded-md">
+              <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
                 CITY: {user.address}
               </p>
             </div>
             <div className="px-4 mt-2 grid grid-cols-3 uppercase gap-8 text-md py-2 ">
-              <p className=" text-center p-2 bg-[#121212aa] rounded-md">
+              <p className=" text-center p-2 bg-[#38f68f55] rounded-md">
                 {user.phone ?? "N/A"}
               </p>
-              <p className="col-span-2 text-center p-2 bg-[#121212aa] rounded-md">
+              <p className="col-span-2 text-center p-2 bg-[#38f68f55] rounded-md">
                 {user.email ?? "N/A"}
               </p>
             </div>
@@ -138,13 +147,7 @@ const UserTokenSettingsByIdPage = () => {
             </div>
 
             <div className="w-full flex justify-end py-3">
-              <Button onClick={()=>{
-                deactivateUser({
-                  userId: params.id
-                })
-              }} variant={"destructive"} className="text-sm">
-                Deactivate Account
-              </Button>
+              <DeleteModal handleDelete={handleDelete} />
             </div>
             <div className="w-full py-3 mt-4">
               <p className="flex items-center gap-1 mb-2">

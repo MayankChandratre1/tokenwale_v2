@@ -20,6 +20,7 @@ export default async function Home() {
       <HydrateClient>
         <main>
           <Navbar />
+          
           <HeroSection />
           <GraphSection />
           <HeroTable />
