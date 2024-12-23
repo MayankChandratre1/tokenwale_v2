@@ -81,7 +81,7 @@ export const userRouter = createTRPCRouter({
       ...doc.data(),
     }));
 
-    const { userId, balance, name, phone, email, address, gender } =
+    const { userId, balance, name, phone, email, address, gender, role } =
       users[0] as unknown as {
         userId: string;
         balance: number;
@@ -90,8 +90,9 @@ export const userRouter = createTRPCRouter({
         email: string;
         address: string;
         gender: "M" | "F" | "O";
+        role: "Super Admin" | "Admin" | "Manager" | "Staff"
       };
-    return { userId, balance, name, phone, email, address, gender };
+    return { userId, balance, name, phone, email, address, gender, role };
   }),
   getUserDetailsForUserId: protectedProcedure
   .input(z.object({

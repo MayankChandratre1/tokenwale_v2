@@ -31,7 +31,7 @@ const AdminProfilePage = () => {
           address: "",
           role: "",
           adminId: "",
-          permissions: "" 
+          permissions: "All Permissions" 
         })
 
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +70,8 @@ const AdminProfilePage = () => {
           name: userDetails?.name,
           phone: userDetails.phone,
           email: userDetails.email,
-          adminId:userDetails.userId
+          adminId:userDetails.userId,
+          role: userDetails.role
         })
       }
     }, [userDetails])

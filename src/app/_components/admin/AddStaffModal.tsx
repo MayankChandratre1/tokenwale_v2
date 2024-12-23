@@ -16,8 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { api } from "@/trpc/react";
-
+import "../../../styles/scroll.css"
 const AddStaffModal = () => {
   const [open, setIsOpen] = useState(false);
 
@@ -61,7 +60,7 @@ const AddStaffModal = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="[&>button]:hidden h-[90vh] border-0 bg-transparent text-white md:w-screen  ">
-        <DialogHeader className="w-full md:px-10 md:pt-2 md:pb-16 rounded-[50px] border border-gray-600 dashboard-card-bg bg-opacity-30 backdrop-blur-lg ">
+        <DialogHeader className="w-full md:px-10 md:pt-2 md:pb-16 rounded-[50px] border border-gray-600 dashboard-card-bg bg-opacity-30 backdrop-blur-lg overflow-y-auto scroll-bar-custom">
           <DialogTitle className="mb-4 relative flex justify-between text-[16px] text-white md:text-[24px] pt-12">
             <p className="text-[#38f68f]">Add Staff</p>
             <Button
@@ -74,7 +73,7 @@ const AddStaffModal = () => {
               <XIcon size={16} />
             </Button>
           </DialogTitle>
-          <DialogDescription className="space-y-4 text-white">
+          <DialogDescription className="space-y-4  text-white">
             <div className="w-full grid grid-cols-4 gap-4">
               <label className="my-auto font-semibold">FULL NAME :</label>
               <input

@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const UserTokenSettings = () => {
-  const [userIds, setUserIds] = useState<string[]>([]);
+  const [userIds, setUserIds] = useState<string[]>(["76396130"]);
   const { mutate, isPending } = api.user.findUserByUserId.useMutation({
     onSuccess: (data) => {
       setUserIds(data.map((e) => e));
