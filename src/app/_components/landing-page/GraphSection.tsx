@@ -86,7 +86,7 @@ export const GraphSection = () => {
 
   return (
     <div className='h-full pb-12 w-full flex flex-col justify-center items-center gap-12 px-8'>
-      <div className='flex flex-col md:flex-row gap-12 justify-center items-center'>
+      {/* <div className='flex flex-col md:flex-row gap-12 justify-center items-center'>
         <div className='relative w-full md:w-[80%] lg:w-[30%] flex justify-center'>
           <Image src="/backgrounds/hero-green-card.png" width={1000} height={1000} className='h-[90%] lg:w-full lg:h-full object-cover' alt="card" />
           <div className='absolute inset-0 flex justify-center items-center flex-col px-3 lg:px-8'>
@@ -95,6 +95,22 @@ export const GraphSection = () => {
           </div>
         </div>
         <div className='w-full md:w-auto'>
+          <Image src="/backgrounds/coin-drop.png" width={1000} height={1000} alt="card" className='w-full h-auto md:w-full lg:h-full' />
+        </div>
+      </div> */}
+      <div className='w-[90%] min-h-48   max-md:space-y-3 md:grid md:grid-cols-12 gap-6'>
+        <div className='py-4  relative col-span-4 '>
+          <Image src="/backgrounds/hero-green-card.png" width={1000} height={1000} className='w-full lg:w-full lg:h-full object-cover' alt="card" />
+          <div className='absolute inset-0 z-90 grid place-items-center'>
+              <div className=' w-[70%] h-[70%] flex flex-col'>
+                <h1 className='text-[#38f68f] text-[16px] min-[400px]:text-[20px] min-[500px]:text-[32px] md:text-[14px] min-[900px]:text-[16px] lg:text-[22px] xl:text-[32px]'>PLAY TO EARN INCENTIVE PROGRAM</h1>
+                <div className='text-[#A7B0AF] flex-1 flex items-end text-[12px] min-[400px]:text-[14px] min-[500px]:text-[20px] md:text-[10px] min-[900px]:text-[12px] lg:text-[16px] xl:text-[18px]'>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque culpa hic labore obcaecati.
+                </div>
+              </div>
+          </div>
+        </div>
+        <div className='bg-gray-900 col-span-8'>
           <Image src="/backgrounds/coin-drop.png" width={1000} height={1000} alt="card" className='w-full h-auto md:w-full lg:h-full' />
         </div>
       </div>
