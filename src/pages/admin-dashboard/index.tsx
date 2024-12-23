@@ -60,7 +60,6 @@ const AdminDashboard = () => {
          }} handleSearch={(userId) => {console.log(userId);
          }} />
          <div className='pt-20'>
-         <Button onClick={handleLogout}>Logout</Button>
             <div className='grid grid-cols-3 p-3'>
                 <div className='dashboard-card-bg p-3 text-white rounded-xl backdrop-blur-xl col-span-2'>
                     <BarChartMain />

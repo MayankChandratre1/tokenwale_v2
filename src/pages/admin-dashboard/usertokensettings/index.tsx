@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const UserTokenSettings = () => {
-  const [userIds, setUserIds] = useState<string[]>(["35049053","76396130","16226215"]);
+  const [userIds, setUserIds] = useState<string[]>([]);
   const { mutate, isPending } = api.user.findUserByUserId.useMutation({
     onSuccess: (data) => {
       setUserIds(data.map((e) => e));
@@ -32,7 +32,7 @@ const UserTokenSettings = () => {
           <div className="relative px-3 w-full">
             <input
               type="number"
-              placeholder="Recent"
+              placeholder="Search By USER ID"
               onChange={(e) => handleSearch(e.target.value)}
               className="w-full my-3 border-b-[1px] border-[#38F68F] bg-transparent px-4 sm:px-4 py-4 sm:pr-12 text-white outline-none"
             />

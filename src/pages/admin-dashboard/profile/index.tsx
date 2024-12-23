@@ -25,13 +25,13 @@ const AdminProfilePage = () => {
         };
 
         const [formdata, setData] = useState({
-          name: "Mayank Chandratre",
-          phone: "7843065180",
-          email: "mayankmchandratre@gmail.com",
-          address: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae consectetur nesciunt alias illum? Adipisci quos nobis, alias iure aliquid eius, nisi minima ipsam dolorem, itaque numquam culpa doloribus odio id!",
-          role: "Admin",
-          adminId: "#987474839475",
-          permissions: "All Permissions" 
+          name: "",
+          phone: "",
+          email: "",
+          address: "",
+          role: "",
+          adminId: "",
+          permissions: "" 
         })
 
   const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
