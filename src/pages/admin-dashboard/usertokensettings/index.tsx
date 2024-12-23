@@ -1,3 +1,4 @@
+import AdminNav from "@/app/_components/admin/AdminNav";
 import UserModal from "@/app/_components/admin/UserModal";
 import { Navbar } from "@/app/_components/common/Navbar";
 import { api } from "@/trpc/react";
@@ -25,7 +26,7 @@ const UserTokenSettings = () => {
 
   return (
     <div className="dashboard-card-bg min-h-screen">
-      <Navbar />
+      <AdminNav />
       <div className="pt-20">
         <h2 className="text-4xl text-white px-4 py-2">User Settings</h2>
         <div>
