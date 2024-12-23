@@ -277,7 +277,7 @@ const RecentTransfer = () => {
                             </tr>
                           ),
                         )}
-                        {txns.length == 0 && (
+                        {/* {txns.length == 0 && (
                           <tr>
                             <td className=' py-4 text-gray-500 italic text-center'>
                               No Transactions on this page
@@ -295,7 +295,7 @@ const RecentTransfer = () => {
                               N/A
                             </td>
                           </tr>
-                        )}
+                        )} */}
                       </tbody>
                       
                     </table>
