@@ -9,7 +9,7 @@ import { Download, InfoIcon, Loader2, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import "../../../../styles/scroll.css"
+import "../../../../styles/scroll.css";
 import { useRouter } from "next/router";
 import AdminNav from "@/app/_components/admin/AdminNav";
 import DeleteModal from "@/app/_components/admin/DeleteModal";
@@ -17,42 +17,42 @@ import DeleteModal from "@/app/_components/admin/DeleteModal";
 const UserTokenSettingsByIdPage = () => {
   const params = useParams<{ id: string }>();
   const [user, setUser] = useState<any>(null);
-  const [isMiningHistory, setIsMiningHistory] = useState(false)
-  const [isBanned, setIsBanned] = useState(false)
-  const router = useRouter()
+  const [isMiningHistory, setIsMiningHistory] = useState(false);
+  const [isBanned, setIsBanned] = useState(false);
+  const router = useRouter();
 
-  const {data:userData} = api.user.getUserDetailsForUserId.useQuery({
-    id: params?.id ?? "76396130"
-  })
+  const { data: userData } = api.user.getUserDetailsForUserId.useQuery({
+    id: params?.id ?? "76396130",
+  });
 
-  const {mutate: banUser} = api.admin.banUserById.useMutation({
-    onSuccess:(data)=>{
-      setIsBanned(true) 
-    }
-  })
+  const { mutate: banUser } = api.admin.banUserById.useMutation({
+    onSuccess: (data) => {
+      setIsBanned(true);
+    },
+  });
 
-  const {mutate: deactivateUser} = api.admin.deactivateUserById.useMutation({
-    onSuccess:(data)=>{
-      router.push("/admin-dashboard")
-    }
-  })
+  const { mutate: deactivateUser } = api.admin.deactivateUserById.useMutation({
+    onSuccess: (data) => {
+      router.push("/admin-dashboard");
+    },
+  });
 
-  const {mutate: disbanUser} = api.admin.disBanUserById.useMutation({
-    onSuccess:(data)=>{
-      setIsBanned(false)
-    }
-  })
+  const { mutate: disbanUser } = api.admin.disBanUserById.useMutation({
+    onSuccess: (data) => {
+      setIsBanned(false);
+    },
+  });
 
-  const toggle = (set:React.Dispatch<React.SetStateAction<boolean>> ) => {
-    set(prev => !prev)
-  }
+  const toggle = (set: React.Dispatch<React.SetStateAction<boolean>>) => {
+    set((prev) => !prev);
+  };
 
   useEffect(() => {
     console.log(params?.id);
 
-    if(userData){
-      setIsBanned(!!userData.banned)
-      setUser(userData)
+    if (userData) {
+      setIsBanned(!!userData.banned);
+      setUser(userData);
     }
 
     // setUser({
@@ -77,10 +77,10 @@ const UserTokenSettingsByIdPage = () => {
 
   const handleDelete = () => {
     deactivateUser({
-      userId: params.id
-    })
-    router.push("/admin-dashboard/usertokensettings")
-  }
+      userId: params.id,
+    });
+    router.push("/admin-dashboard/usertokensettings");
+  };
 
   return (
     <div className="text-white min-h-screen bg-black">
@@ -101,10 +101,12 @@ const UserTokenSettingsByIdPage = () => {
           <div>
             <div className="px-4 mt-3 grid grid-cols-3 uppercase gap-8 text-md py-2">
               <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
-                {user.name ? user.name.split(" ")[0]: "N/A"}
+                {user.name ? user.name.split(" ")[0] : "N/A"}
               </p>
               <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
-                {user.name ? user.name.split(" ")[user.name.split(" ").length - 1]:"N/A"}
+                {user.name
+                  ? user.name.split(" ")[user.name.split(" ").length - 1]
+                  : "N/A"}
               </p>
               <p className="flex-1 text-center p-2 bg-[#38f68f55] rounded-md">
                 CITY: {user.address}
@@ -122,24 +124,46 @@ const UserTokenSettingsByIdPage = () => {
             <div className="mt-12">
               <div className="my-3 flex justify-between">
                 <div>
-                <Button onClick={()=>{
-                  toggle(setIsMiningHistory)
-                }} className={`${isMiningHistory ? "bg-[#38f68f] hover:bg-[#38f68faa] text-black":"bg-transparent hover:bg-transparent text-white"} text-sm`}>Mining History</Button>
-                <Button onClick={()=>{
-                  toggle(setIsMiningHistory)
-                }} className={`${!isMiningHistory ? "bg-[#38f68f] hover:bg-[#38f68faa] text-black":"bg-transparent hover:bg-transparent text-white"} text-sm`}>Transaction History</Button>
+                  <Button
+                    onClick={() => {
+                      toggle(setIsMiningHistory);
+                    }}
+                    className={`${
+                      isMiningHistory
+                        ? "bg-[#38f68f] hover:bg-[#38f68faa] text-black"
+                        : "bg-transparent hover:bg-transparent text-white"
+                    } text-sm`}
+                  >
+                    Mining History
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      toggle(setIsMiningHistory);
+                    }}
+                    className={`${
+                      !isMiningHistory
+                        ? "bg-[#38f68f] hover:bg-[#38f68faa] text-black"
+                        : "bg-transparent hover:bg-transparent text-white"
+                    } text-sm`}
+                  >
+                    Transaction History
+                  </Button>
                 </div>
 
                 <div className="flex items-center">
                   <FilterModal />
                   <Button className="bg-[#38f68f] text-sm hover:bg-[#38f68faa] text-black">
-                    <Download size={16} className="mr-2" />Export To CSV</Button>
+                    <Download size={16} className="mr-2" />
+                    Export To CSV
+                  </Button>
                 </div>
               </div>
-              <div className="h-fit py-4">
-                {
-                  isMiningHistory ? <BarChartUserMine id={params.id} />: <BarChartUser  id={params.id} />
-                }
+                <div className="h-full py-4">
+                  {isMiningHistory ? (
+                    <BarChartUserMine id={params.id} />
+                  ) : (
+                    <BarChartUser id={params.id} />
+                  )}
               </div>
             </div>
             <div className="pl-20 mt-5">
@@ -155,17 +179,29 @@ const UserTokenSettingsByIdPage = () => {
                 By Clicking on Ban Account, you restrict the user from creating
                 a new account from the same credentials
               </p>
-              {
-                isBanned ? <Button className="bg-[#38f68f] hover:bg-[#38f68fdd]" onClick={()=>{
-                  disbanUser({
-                    userId: params.id
-                  })
-                }}>Disban Account</Button>:<Button variant={"destructive"} onClick={()=>{
-                  banUser({
-                    userId: params.id
-                  })
-                }}>Ban Account</Button>
-              }
+              {isBanned ? (
+                <Button
+                  className="bg-[#38f68f] hover:bg-[#38f68fdd]"
+                  onClick={() => {
+                    disbanUser({
+                      userId: params.id,
+                    });
+                  }}
+                >
+                  Disban Account
+                </Button>
+              ) : (
+                <Button
+                  variant={"destructive"}
+                  onClick={() => {
+                    banUser({
+                      userId: params.id,
+                    });
+                  }}
+                >
+                  Ban Account
+                </Button>
+              )}
             </div>
           </div>
         </div>

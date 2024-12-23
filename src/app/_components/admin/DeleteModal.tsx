@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 const DeleteModal = ({handleDelete}:{
     handleDelete:() => void
 }) => {
-    const [open, setIsOpen] = useState(true)
+    const [open, setIsOpen] = useState(false)
     return (
     <Dialog open={open} onOpenChange={setIsOpen} >
         <DialogTrigger asChild>

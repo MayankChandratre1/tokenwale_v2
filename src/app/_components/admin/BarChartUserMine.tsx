@@ -1,4 +1,4 @@
-import { Bar, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
+import { Bar, CartesianGrid, LabelList, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 import { BarChart } from "recharts";
 
@@ -19,7 +19,7 @@ const BarChartUserMine = ({id}:{
       } satisfies ChartConfig;
 
       const {data:txns} = api.txn.getLatestMineTxnForUserId.useQuery({
-            limit:7,
+            limit:15,
             id:id
       })
 
@@ -113,57 +113,61 @@ const BarChartUserMine = ({id}:{
   return (
     <div>
          <Card
-              className="flex-1"
-              style={{
-                width:"580px",
-                // height:"100%",
-                backgroundColor: "transparent",
-                border: "none",
-              }}
-            >
-              <CardContent className="max-w-full w-full max-h-[300px] ">
-                
-                <ChartContainer config={chartConfig}>
-                  <BarChart
-                    accessibilityLayer
-                    data={newChartData}
-                    margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
-                    height={200}
-                    style={{ height:"100%"}}
-                  >
-                    <XAxis
-                      dataKey="time"
-                      tickLine={false}
-                      tickMargin={10}
-                      axisLine={false}
-                      tickFormatter={(value) => value as string}
-                      tick={{ fontSize: 12 }}
-                    />
-                    <YAxis
-                      dataKey="token"
-                      tickLine={false}
-                      tickMargin={10}
-                      axisLine={false}
-                      tickFormatter={(value) => value as string}
-                      tick={{ fontSize: 12 }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <CartesianGrid horizontal={false} vertical={false} />
-                    <Bar dataKey="token" fill="#38F68F">
-                      <LabelList
-                        position="top"
-                        offset={12}
-                        className="fill-foreground"
-                        fontSize={16}
-                      />
-                    </Bar>
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+                 style={{
+                   width: "100%",
+                  //  height:"400px",
+                   backgroundColor: "transparent",
+                   border: "none",
+                 }}
+               >
+                 <CardContent>
+                   <div>
+                     <h1 className="text-3xl text-white">Token Transferred</h1>
+                   </div>
+                   <ChartContainer config={chartConfig}>
+                     <ResponsiveContainer maxHeight={400} aspect={2}>
+                       <BarChart
+                         accessibilityLayer
+                         data={newChartData}
+                         margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
+                       >
+                         <XAxis
+                           dataKey="time"
+                           tickLine={false}
+                           tickMargin={10}
+                           axisLine={false}
+                           tickFormatter={(value) => value as string}
+                           tick={{ fontSize: 16 }}
+                           
+                         />
+                         <YAxis
+                           dataKey="token"
+                           tickLine={false}
+                           tickMargin={10}
+                           axisLine={false}
+                           tickFormatter={(value) => value as string}
+                           tick={{ fontSize: 16 }}
+                           yAxisId={"right"}
+                           orientation="right"
+                         />
+                         <ChartTooltip
+                           cursor={false}
+                           content={<ChartTooltipContent hideLabel />}
+                         />
+                         <CartesianGrid horizontal={false} vertical={false} />
+                         <Bar dataKey="token" fill="#38F68F" yAxisId={"right"}>
+                           <LabelList
+                             position="top"
+                             offset={12}
+                             className="fill-foreground"
+                             fontSize={16}
+                           />
+                         </Bar>
+                       </BarChart>
+                     </ResponsiveContainer>
+                   </ChartContainer>
+                 </CardContent>
+               </Card>
     </div>
   )
 }

@@ -61,9 +61,10 @@ const AdminDashboard = () => {
          }} />
          <div className='pt-20'>
             <div className='grid grid-cols-3 p-3'>
-                <div className='dashboard-card-bg p-3 text-white rounded-xl backdrop-blur-xl col-span-2'>
-                    <BarChartMain />
-                </div>
+            <div className="dashboard-card-bg p-3 text-white rounded-xl backdrop-blur-xl col-span-2 w-full">
+                <BarChartMain />
+            </div>
+
                 <div className='p-3'>
                     <h3 className='text-white text-3xl mb-4'>Quick Links</h3>
                     <div className='grid grid-cols-3 gap-2'>
