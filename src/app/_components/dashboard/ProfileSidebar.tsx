@@ -146,6 +146,14 @@ const handleOtpKeyDownEmail = (e: React.KeyboardEvent<HTMLInputElement>, index: 
     onSuccess: (data) => {
       console.log(data);
     },
+    onError: err => {
+      if(err.message == 'BAD_REQUEST')
+        alert("This Phone is banned")
+      else
+        alert("Something went wrong")
+      closeSidebar()
+      setIsEmailOtpVisible(false)
+    }
   });
 
   const handleGeneratePhoneOtp = () => {
@@ -265,6 +273,14 @@ const handleOtpKeyDownEmail = (e: React.KeyboardEvent<HTMLInputElement>, index: 
     onSuccess: (data) => {
       console.log(data);
     },
+    onError: err => {
+      if(err.message == 'BAD_REQUEST')
+        alert("This Email is banned")
+      else
+        alert("Something went wrong")
+      closeSidebar()
+      setIsPhoneOtpVisible(false)
+    }
   });
 
   const handleGenerateEmailOtp = async () => {

@@ -39,6 +39,18 @@ export const globalRouter = createTRPCRouter({
     }
     return { burnt, remainingToken };
   }),
+  checkIsBanned: publicProcedure
+  .input(z.object({
+    id: z.string()
+  }))
+  .mutation(async ({ctx, input})=>{
+    const bannedRef = ctx.db.collection('banned')
+    const bannedUser = (await bannedRef.where('userId','==',input.id).count().get()).data()
+    if(bannedUser.count > 0){
+        return true
+    }
+    return false
+  }),
   promocode: protectedProcedure
     .input(z.object({ code: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {

@@ -161,7 +161,12 @@ const AdminProfilePage = () => {
 
   return (
     <div className="text-white min-h-screen bg-black scroll-bar-custom">
-    <AdminNav />
+      <AdminNav setAddNote={(text)=>console.log(text)
+         } toggleSidebar={()=>{
+            console.log("Print");
+            
+         }} handleSearch={(userId) => {console.log(userId);
+         }} />
     <div className="pt-20 min-h-screen h-screen  px-4 pb-4">
       <div className="h-full max-h-[700px] relative scroll-bar-custom overflow-y-auto rounded-md p-12 bg-[#38f68f] bg-opacity-20 backdrop-blur-sm">
         <div className="absolute top-4 right-4">

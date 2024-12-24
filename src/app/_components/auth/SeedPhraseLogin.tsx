@@ -6,9 +6,16 @@ import { useRouter } from "next/router";
 import { Loader2 } from "lucide-react";
 
 export const SeedPhraseLogin = () => {
-  const [seedPhrases, setSeedPhrases] = useState<string[]>(Array(12).fill(""));
+  const [seedPhrases, setSeedPhrases] = useState<string[]>(new Array(12).fill(""));
   const [userId, setUserId] = useLocalStorage<string>("userId", "");
+  const [isBanned, setIsBanned] = useState(false)
   const router = useRouter();
+
+  const {mutate: checkIsBanned, isPending: isBanPending} = api.global.checkIsBanned.useMutation({
+    onSuccess: data => {
+      setIsBanned(data)
+    }
+  })
 
   const { mutate, isPending } =
     api.user.getUserIdFromPhrase.useMutation({
@@ -17,7 +24,11 @@ export const SeedPhraseLogin = () => {
         await router.push("/auth/login");
       },
       onError: (error) => {
-        console.error("Error logging in with seed phrase:", error);
+        console.error("Error logging in with seed phrase:", error.message);
+        if(error.message == 'BAD_REQUEST')
+          alert("Your Account is currently Banned!")
+        if(error.message == 'UNAUTHORIZED')
+          alert("Invalid Seed Phrase!")
       },
     });
 

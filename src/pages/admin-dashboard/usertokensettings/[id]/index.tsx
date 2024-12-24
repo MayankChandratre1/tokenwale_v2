@@ -84,7 +84,12 @@ const UserTokenSettingsByIdPage = () => {
 
   return (
     <div className="text-white min-h-screen bg-black">
-      <AdminNav />
+        <AdminNav setAddNote={(text)=>console.log(text)
+         } toggleSidebar={()=>{
+            console.log("Print");
+            
+         }} handleSearch={(userId) => {console.log(userId);
+         }} />
       <div className="pt-20 min-h-screen h-screen  px-4 pb-4">
         <div className="h-full scroll-bar-custom overflow-y-auto rounded-md p-4 px-6 bg-[#38f68f] bg-opacity-10 backdrop-blur-sm">
           <div className="flex items-center justify-between">

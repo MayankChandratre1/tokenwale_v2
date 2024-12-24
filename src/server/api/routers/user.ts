@@ -26,6 +26,11 @@ export const userRouter = createTRPCRouter({
           code: "UNAUTHORIZED",
         });
       const user = users.docs[0];
+      if(user?.data().banned){
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
       return user?.data().userId as string;
     }),
   updatePasswordFromUserId: publicProcedure

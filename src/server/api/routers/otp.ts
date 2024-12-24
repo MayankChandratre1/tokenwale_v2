@@ -18,7 +18,12 @@ export const otpRouter = createTRPCRouter({
     .input(z.object({ email: z.string().min(1).email() }))
     .mutation(async ({ ctx, input }) => {
       const otp = generateOTP();
-
+      const bannedRef = (await ctx.db.collection('banned').where("email",">=",input.email).count().get()).data()
+      if(bannedRef.count > 0){
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
       const msg = {
         to: input.email,
         from: "app@app.tokenwale.in",
@@ -43,12 +48,19 @@ export const otpRouter = createTRPCRouter({
     .input(z.object({ phone: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const otp = generateOTP();
+      const bannedRef = (await ctx.db.collection('banned').where("phone",">=",input.phone).count().get()).data()
+      if(bannedRef.count > 0){
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
       console.log(
         `https://www.fast2sms.com/dev/bulkV2?authorization=${env.FAST2SMS_API_KEY}&variables_values=${otp}&route=otp&numbers=${input.phone}`,
       );
       const response = await axios.get(
         `https://www.fast2sms.com/dev/bulkV2?authorization=${env.FAST2SMS_API_KEY}&variables_values=${otp}&route=otp&numbers=${input.phone}`,
       );
+
       console.log(response.data);
       console.log(otp);
       await ctx.db.collection("otp").add({

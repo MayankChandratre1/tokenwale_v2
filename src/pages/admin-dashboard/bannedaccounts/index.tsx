@@ -40,7 +40,12 @@ const BannedAccounts = () => {
 
   return (
     <div className="dashboard-card-bg min-h-screen">
-      <AdminNav />
+        <AdminNav setAddNote={(text)=>console.log(text)
+         } toggleSidebar={()=>{
+            console.log("Print");
+            
+         }} handleSearch={(userId) => {console.log(userId);
+         }} />
       <div className="pt-20">
         <h2 className="text-4xl text-white px-4 py-2">User Settings</h2>
         <div>

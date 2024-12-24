@@ -57,7 +57,6 @@ const AdminDashboard = () => {
          } toggleSidebar={()=>{
             console.log("Print");
             
-         }} handleSearch={(userId) => {console.log(userId);
          }} />
          <div className='pt-20'>
             <div className='grid grid-cols-3 p-3'>
