@@ -197,7 +197,7 @@ const BarChartMain = () => {
                   tickMargin={10}
                   interval={2}
                   axisLine={false}
-                  tickFormatter={(value, index) => ticksX[index] as string|| ""}
+                  tickFormatter={(value, index) => ticksX[index]! || ""}
                   tick={{ fontSize: 16 }}
                 />
                 <YAxis

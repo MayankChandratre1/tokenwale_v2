@@ -1,4 +1,4 @@
-export const exportToCSV = (data: object[], filename: string = "data.csv") => {
+export const exportToCSV = (data: object[], filename = "data.csv") => {
     if(!data || !data[0]) return
     const csvContent =
       "data:text/csv;charset=utf-8," +
